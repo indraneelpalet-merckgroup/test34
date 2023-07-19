@@ -1,0 +1,356 @@
+openapi: 3.0.0
+info:
+  title: Broker Gateway Capa exchange
+  description: >-
+    Interface for the creation and communication of complaints and CAPA
+    activities in the SF Gateway
+  version: 0.0.1
+servers:
+  - url: 'https://localhost:8080/api/v0'
+security:
+  - bearerAuth: []
+paths:
+
+  /selectionValues:
+    get:
+      tags:
+        - SelectionValuesController
+      operationId: getSelectionValues
+      parameters:
+        - schema:
+            type: string
+            enum: [capa, complaint]
+          name: workFlow
+          in: query
+          description: the fieldName for which a value has already been selected
+          required: true
+        - schema:
+            type: string
+          name: fieldName
+          in: query
+          description: the fieldName for which the selection values are required
+          required: true
+        - schema:
+            type: string
+          name: preselectedFieldName
+          in: query
+          description: the fieldName for which a value has already been selected
+          required: false
+        - schema:
+            type: string
+          name: preselectedFieldValue
+          in: query
+          description: the value for 'preselectedFieldName' which has already been selected
+          required: false
+      responses:
+        '200':
+          description: return the list of capas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectionValues'
+  /assignee:
+    get:
+      tags:
+        - AssigneeController
+      operationId: getAssignee
+      responses:
+        '200':
+          description: return the list of assignee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssigneeResponse'
+  /capas:
+    get:
+      tags:
+        - CapaController
+      operationId: listChangedCapas
+      parameters:
+        - schema:
+            type: string
+            format: date-time
+          name: modifiedSince
+          in: query
+          description: list capas changed since modifiedSince
+          required: true
+      responses:
+        '200':
+          description: return the list of capas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangedCapas'
+    post:
+      tags:
+        - CapaController
+      operationId: createCapa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCapa'
+      responses:
+        '201':
+          description: return the info about a creeated capa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCapaResponse'
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+
+    ChangedCapas:
+      type: array
+      items:
+        $ref: '#/components/schemas/Capa'
+
+    CreateCapaResponse:
+      type: object
+      properties:
+        recordId:
+          type: string
+
+    NewCapa:
+      type: object
+      required:
+        - assignee
+        - title
+        - country
+        - plantSubsidiary
+        - site
+        - dueDate
+        - typeofSource
+        - businessIdentifier
+      properties:
+        assignee:
+          type: string
+        title:
+          type: string
+        country:
+          type: string
+        plantSubsidiary:
+          type: string
+        description:
+          type: string
+        criticality:
+          type: string
+        comments:
+          type: string
+        site:
+          type: string
+        dueDate:
+          type: string
+          format: date
+        typeofSource:
+          type: string
+        businessIdentifier:
+          type: string
+        state:
+          type: string
+        facilitiesinScope:
+          type: array
+          items: 
+            type: string
+        capAtype:
+          type: string
+        otherRelatedRecords:
+          type: string
+        qualityUnitApprover:
+          type: string
+        managementApprover:
+          type: string
+        SMEApprovers:
+          type: array
+          items:
+            type: string
+        effectivenessCheck:
+          type: string
+        summaryJustification:
+          type: string
+        effectivenessDescription:
+          type: string
+        effectivenessReviewDueDate:
+          type: string
+        attachmentIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/CapaProjectAttachment'
+
+    CapaProjectAttachment:
+      type: object
+      properties:
+        documentId:
+          type: string
+        name:
+          type: string
+
+    SelectionValues:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        allowedValues:
+          type: array
+          items:
+            type: string
+
+    AssigneeResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Assignee'
+
+    Assignee:
+      type: object
+      properties:
+        DisplayName:
+          type: string
+        EmailAddress:
+          type: string
+        UniqueId:
+          type: string
+        Sites:
+          type: array
+          items:
+            type: string
+
+    Capa:
+      allOf:
+        - $ref: '#/components/schemas/NewCapa'
+        - type: object
+          properties:
+            url:
+              type: string
+            prid:
+              type: string
+            originator:
+              type: string
+            dateOpened:
+              type: string
+              format: date
+            effectivenessCheckResult:
+              type: string
+            dateCompleted:
+              type: date
+              format: date
+            managementApprovalBy:
+              type: string
+            managementApprovalOn:
+              type: string
+            smeApprovalBy:
+              type: string
+            smeApprovalOn:
+              type: string
+            allActionsCompletedOn:
+              type: string
+            effectivenessReviewBy:
+              type: string
+            effectivenessReviewOn:
+              type: string
+            effectivenessApprovalBy:
+              type: string
+            effectivenessApprovalOn:
+              type: string
+            lastModifiedDate:
+              type: string
+              format: date
+            capaActions:
+              type: array
+              items:
+                $ref: '#/components/schemas/CapaAction'
+
+    CapaAction:
+      type: object
+      properties:
+        prid:
+          type: string
+        title:
+          type: string
+        assignee:
+          type: string
+        dueDate:
+          type: string
+          format: date
+        capaType:
+          type: string
+        businessIdentifier:
+          type: string
+        country:
+          type: string
+        PlantSubsidiary:
+          type: string
+        Description:
+          type: string
+        ChangeControlRequired:
+          type: string
+        Results:
+          type: string
+        Comments:
+          type: string
+        Currency:
+          type: string
+        Costs:
+          type: string
+        CommentforCosts:
+          type: string
+        Completedby:
+          type: string
+        Completedon:
+          type: string
+        QualityUnitApprovalby:
+          type: string
+        ManagementApprovalon:
+          type: string
+        DateOpened:
+          type: string
+        facilitiesinScope:
+          type: array
+          items:
+            type: string
+        Site:
+          type: string
+        State:
+          type: string
+        ParentRecordId:
+          type: string
+        lastModifiedDate:
+          type: string
+          format: date
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        fields:
+          type: string
+  responses:
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadData:
+      description: Bad data for TW
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
