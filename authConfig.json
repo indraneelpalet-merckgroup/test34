@@ -1,0 +1,5 @@
+{
+  "msalClientID" : "${MSAL_CLIENT_ID}",
+  "msalAuthority": "${MSAL_AUTHORITY}",
+  "msalRedirectUrl": "${MSAL_REDIRECT_URL}"
+}
