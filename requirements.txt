@@ -1,11 +1,11 @@
 -f https://download.pytorch.org/whl/torch_stable.html
-torch
-torchvision
-torchaudio
-transformers
-textract
-fuzzywuzzy
-fastapi
-python-multipart
-uvicorn
-python-dateutil
+torch==2.0.1+rocm5.4.2
+torchvision==0.15.2+rocm5.4.2
+torchaudio==2.0.2+rocm5.4.2
+transformers==4.31.0
+textract==1.6.5
+fuzzywuzzy==0.18.0
+fastapi==0.100.0
+python-multipart==0.0.6
+uvicorn==0.23.1
+python-dateutil==2.8.2
