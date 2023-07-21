@@ -1,6 +1,6 @@
 -f https://download.pytorch.org/whl/torch_stable.html
 torch==2.0
-torchvision==0.10.0+cpu
+torchvision==0.15.2+cpu
 torchaudio==0.9.0
 transformers==4.8.2
 textract==1.6.3
