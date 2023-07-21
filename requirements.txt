@@ -1,5 +1,5 @@
 -f https://download.pytorch.org/whl/torch_stable.html
-torch==2.0
+torch==1.13.1
 torchvision==0.15.2+cpu
 torchaudio==2.0.2
 transformers==4.8.2
