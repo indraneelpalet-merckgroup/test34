@@ -2,10 +2,10 @@
 torch
 torchvision
 torchaudio
-transformers==4.8.2
-textract==1.6.3
-fuzzywuzzy==0.18.0
-fastapi==0.61.1
-python-multipart==0.0.5
-uvicorn==0.15.0
-python-dateutil==2.8.1
+transformers
+textract
+fuzzywuzzy
+fastapi
+python-multipart
+uvicorn
+python-dateutil
