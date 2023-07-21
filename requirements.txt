@@ -1,7 +1,7 @@
 -f https://download.pytorch.org/whl/torch_stable.html
 torch==2.0.1+rocm5.4.2
-torchvision==0.15.2+rocm5.4.2
-torchaudio==2.0.2+rocm5.4.2
+torchvision==0.15.2
+torchaudio==2.0.2
 transformers==4.31.0
 textract==1.6.5
 fuzzywuzzy==0.18.0
